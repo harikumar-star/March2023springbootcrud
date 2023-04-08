@@ -1,0 +1,271 @@
+SPRING BOOT ANNOTATIONS:
+==========================
+
+
+links -- https://medium.com/@somasharma_81597
+
+
+@Springbootapplication:
+========================
+combination of enableautoconfiguration,componentscan,configuration 
+
+enableautoconfig--
+
+componentscan -- scan the beans so it can visible to the ioc container (basepackages and baseclass)
+
+configuration-- define the bean definition so that spring ioc can load it. it is java based configuration
+
+
+----------------------------------
+
+Stereotype annotations:
+=======================
+======================
+1.component
+2.service
+3.controller/restcontroller
+
+Component is parent of below annotations we can place component in below scenario but to understand the code use seperate annotation
+|
+|
+service:  
+========
+---- bussiness logic eg---
+@service
+userimpl implement Userdao
+---------------------------------             
+restcontroller/controller
+=========================
+controller-->t is used to mark a class as a web controller to process HTTP requests and return 
+a view name, which is then resolved by a view resolver to generate the final HTML view.
+
+If you want to return a JSON or XML from a Spring MVC controller then you need to add @ReseponseBody annotation to each of Controller method and it 
+seems overkill while implementing REST APIs using Spring and Spring Boot.
+
+restcontroller-->The @RestController annotation is a combination of the 
+@Controller and @ResponseBody annotations and you can use it to implement REST APIs in Java and Spring Boot.
+
+
+The key difference between @Controler and @RestController annotation is @ResponseBody annotation, 
+@Controler does not automatically add the @ResponseBody annotation to all of the controller’s methods, 
+which means that you need to add it to each method individually if you want to return a JSON or XML response.@RestController 
+automatically adds the @ResponseBody annotation to all of the controller’s methods
+
+---------------------
+repository:
+=============
+database activities
+
+@Repository
+interface Userdao
+class saveupdatedeletemethods
+
+----------------------------------
+
+Spring Core Annotations:
+======================
+
+configuration:
+
+is used if we dont want to create bean using annotation(Component) and xml file 
+
+eg:
+
+@Configuration
+class A
+{
+@Bean
+public AdidasDao getOwnerDao() {
+return new AdidasImp();
+}
+
+}
+
+Bean:
+
+method level annotation used to create object
+@Bean
+public AdidasDao getOwnerDao() {
+return new AdidasImp();
+}
+
+Autowired:
+
+it search for the object and inject bean to the particular class
+
+class Product{
+@Autowired
+	AdidasDao dao;
+
+int count = dao.update();
+
+}
+
+Qualifier:
+==========
+
+two class implementing one interface for which class we need object need to mention
+like
+
+@Autowired
+@Qualifier("classA")
+Class A
+
+@Autowired
+@Qualifier("classB")
+Class B
+
+Primary:(priority) eg- uses for db related
+=======
+same interface scenario
+if you dont want to use qualifier to mention particular class use primary
+
+@primary
+class A impl Interface 
+Class B impl Interface
+
+
+only class bean will be created in priority base if we want class b autowire and callit
+
+Lazy and Eager Loading:
+======================
+
+it default spring is eager load that it will create object when we place component,bean
+annotations it dont care about heap space to avoid that use lazy
+is used to tell spring that dont create object untill i tell it saves heap space if we want to use
+bean that is marked lazy use autowire to inject to particular class.
+
+@Coponent
+Class A{
+obj is created
+}
+@Component
+@lazy
+Class B{
+obj is created for B
+}
+
+output:
+====
+obj is created
+
+PropertySource:
+================
+
+@Value("${server.port}")
+@PropertySource("classpath:custom.properties")
+app.propertie
+
+name=hari
+
+custom.properties
+
+name=spring
+
+@Value("$(name)")
+private String name;
+
+sop(name)//hari
+
+if we want load properties from another propert file use propertysource annotation
+
+@PropertySource("classpath:custom.proper")
+class A{
+@Value("$(name)")
+private String name;
+
+op// spring
+
+}
+
+the thing is it will load key values from both the property file app.properties automatically load by
+spring
+
+@ConfigurationProperties
+===========================
+@ConfigurationProperties(prefix="server")
+@Data --- tostring() called when used
+
+if we want load properties by a particular bean use this annotation and add in map
+map the entire propert to object
+
+eg:
+
+@Configuration
+@ConfigurationProperties(prefix="spring.datasource")
+public class Config {
+
+	private  List<String> my = new ArrayList<String>();;
+	public List<String> getMy() {
+		return my;
+	}
+	public void setMy(List<String> my) {
+		this.my = my;
+	}
+
+autowire to 
+-------------------------
+
+Profile:
+========
+
+in debugging there is three prop file stage,dev,prod if we want to load particular prop use
+profile annotation
+
+eg:
+==
+
+app.properties:
+spring.profiles.active=stage
+
+stage.properties
+name=value
+name=value
+@Value("$(spring.datasource)")
+private String name
+
+class A
+@Bean
+@Profile("stage")
+public String datasourec()
+{
+return name,name
+}
+
+Autowire
+A a 
+a.datasource // name,name
+
+------------------------------
+Scopes:
+1.singleton  create single object  -- multiple referenc point to same object
+2.prototype  create diffrent object
+
+request,session,application,webscoket
+
+
+var context =	SpringApplication.run(NikeApplication.class, args); configurableapplicationcontext
+---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------

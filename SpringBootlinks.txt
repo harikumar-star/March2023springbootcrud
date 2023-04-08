@@ -1,0 +1,54 @@
+SPRING BOOT IMPORTANT LINKS:
+===========================
+
+
+Spring @RequestParam vs @PathVariable Annotations
+https://www.codejava.net/frameworks/spring/spring-mvc-with-jdbctemplate-example
+@RequestParam is more useful on a traditional web application where data is mostly passed in the query parameters while @PathVariable is more suitable for RESTful web services where URL contains values.
+ 
+REQUESTBODY VS REQUESTBODY:
+Request body for sending value from postman json format to print that values in console use restcontroller annotation
+Requestbody 
+uses HTTP message converter to convert a User object to HTTP response body with the help of jackson-databind
+
+https://www.springboottutorial.com/spring-boot-with-static-content-css-and-javascript-js
+
+=========================
+select * from spring
+
+alter table spring
+rename column empname to productname;
+
+alter table spring
+add(email varchar2(50),
+telephone varchar2(50),
+address varchar2(50));
+
+delete from spring
+
+desc spring
+
+http://127.0.0.1:8081/apex/f?p=4500:1003:2716479632654717::NO:::
+
+https://stackoverflow.com/questions/19972073/how-to-show-success-message-on-page-redirect-from-servlet-to-jsp
+
+httsession
+https://studygyaan.com/spring-boot/httpsession-spring-boot-session-management#:~:text=Session%20management%20is%20an%20essential,Servlet%20API%20to%20manage%20sessions.
+
+
+https://spring.io/guides/gs/serving-web-content/
+
+https://github.com/harikumar-star/March2023springbootcrud.git
+https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub -- git basic command
+
+
+autoincrement:
+https://stackoverflow.com/questions/11296361/how-to-create-id-with-auto-increment-on-oracle
+
+https://www.bezkoder.com/spring-boot-jdbctemplate-example-mysql/
+
+https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm 
+
+https://stackoverflow.com/questions/49588657/how-create-an-input-list-html5-with-all-cities-of-country-is-possible
+
+https://projectlombok.org/features/Data

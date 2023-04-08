@@ -1,0 +1,50 @@
+Check the Port:
+===============
+
+netstat -ano -p tcp.
+
+----------------------------
+ 
+Find the running port:
+======================= 
+ 
+netstat -na | find "8080"
+
+In bash:
+========
+netstat -na | grep "8080"
+
+In PowerShell:
+=============
+netstat -na | Select-String "8080"
+
+------------------------------
+
+check the port no in oracle:
+============================
+
+C:\oraclexe\app\oracle\product\10.2.0\server\NETWORK\ADMIN
+
+Destination Folder: C:\oraclexe\
+Port for 'Oracle Database Listener': 1521
+Port for 'Oracle Services for Microsoft Transaction Server': 2030
+Port for HTTP Listener: 8081
+
+if oracle refuse to connect 
+
+solution:
+1.reinstall
+2.check the port and stop the port that is running
+
+localhost:8081
+
+----------------------------------
+
+kill process:
+==============
+
+netstat -ano | findstr :<PORT>
+
+taskkill /PID <PID> /F
+
+----------------

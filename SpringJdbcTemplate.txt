@@ -1,0 +1,160 @@
+ 
+ Add array in db:
+ ================
+ PreparedStatement pstmt = null;
+      String sql = null;//from  w ww  .j ava  2  s  . com
+      Object [] chapters = {1,2,3};
+      ARRAY chapterArray = null;
+      try{
+          ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("CHAP_LIST_TYPE", conn);
+          chapterArray = new ARRAY(descriptor, conn, chapters);
+          sql = "INSERT INTO AUTHOR VALUES(" +
+                "author_recipes_seq.nextval, " +
+                "?, " +
+                "?)";
+          pstmt = conn.prepareStatement(sql);
+          pstmt.setString(1, "Jack");
+          pstmt.setArray(2, chapterArray);
+          pstmt.executeUpdate();
+      } catch (SQLException ex){
+          ex.printStackTrace();
+      } finally {
+          if (pstmt != null){
+              pstmt.close();
+          }
+      }
+  }
+  
+  SPRING JDBC TEMPLATE CRUD:
+  
+  ADD AND CHECK FOR NAME AVAILBLE IN DB:
+  =======================================
+  
+  	public Employee addemp(Employee emp) {
+
+		System.out.println("Add Emp");
+		// em_validate,user_register
+		String sql = "insert into user_register (empid,name,designation,experience,age,status) values (customers_seq.NEXTVAL,?,?,?,?,?)";
+		// String sql1 = "insert into emp_validate (name) values (?)";
+		String name = emp.getName();
+		System.out.println("Name getting from empName" + name);
+
+		try {
+			Employee tutorial = jdbcTemplate.queryForObject("SELECT * FROM user_register WHERE name=?",
+					BeanPropertyRowMapper.newInstance(Employee.class), name);
+			String id = tutorial.getName();
+			// System.out.println(p.getUserid());
+			if (id.equalsIgnoreCase(name)) {
+				System.out.println("data already");
+				return tutorial;
+			}
+
+		} catch (EmptyResultDataAccessException e) {
+
+			// return null;
+			System.out.println("Not found");
+			int count = jdbcTemplate.update(sql, new Object[] { emp.getName(), emp.getDesignation(),
+					emp.getExperience(), emp.getAge(), emp.getStatus() });
+			return null;
+
+		}
+		return null;
+
+	}
+  
+  SHOW ALL EMPLOYEE:
+  =================
+  
+  
+  public List<Employee> list() {
+
+		String sql = "SELECT * FROM user_register";
+		List<Employee> listContact = jdbcTemplate.query(sql, new RowMapper<Employee>() {
+
+			@Override
+			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				System.out.println("Before");
+
+				// System.out.println("POJO----------"+pojos.getT1()+"----"+pojos.getT2());
+				Employee p = new Employee();
+				p.setEmpid(rs.getString(1));
+
+				p.setName(rs.getString(2));
+				p.setDesignation(rs.getString(3));
+				p.setExperience(rs.getString(4));
+				p.setAge(rs.getString(5));
+				p.setStatus(rs.getString(6));
+				return p;
+			}
+
+		});
+		return listContact;
+
+	}
+	
+	GET PARTICULAR RECORS USING ID:
+	==============================
+	@Override
+	public Employee getemp(String empid) {
+
+		String sql = "SELECT * FROM user_register WHERE empid=" + empid;
+		return jdbcTemplate.query(sql, new ResultSetExtractor<Employee>() {
+
+			@Override
+			public Employee extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if (rs.next()) {
+					Employee p = new Employee();
+					p.setEmpid(rs.getString(1));
+					p.setName(rs.getString(2));
+					p.setDesignation(rs.getString(3));
+					p.setExperience(rs.getString(4));
+					p.setAge(rs.getString(5));
+					p.setStatus(rs.getString(6));
+					return p;
+				}
+				return null;
+
+				// return null;
+			}
+
+		});
+	}
+	
+	UPDATE RECORD:
+	================
+	@Override
+	public int UpdateEmp(Employee emp) {
+
+		String empid = emp.getEmpid();
+
+		String update = "update user_register set name=?, designation=?, experience=?, age=?, status=? where empid=?";
+		int count = jdbcTemplate.update(update, emp.getName(), emp.getDesignation(), emp.getExperience(), emp.getAge(),
+				emp.getStatus(), emp.getEmpid());
+
+		return count;
+	}
+
+DELETE RECORD:
+=============	
+@RequestMapping(value = "/deleteproduct", method = RequestMethod.GET)
+	public ModelAndView deleteContact(HttpServletRequest request, Model model) {
+		// int contactId = Integer.parseInt(request.getParameter("id"));
+
+		System.out.println("Inside Delete Product");
+		String ids = request.getParameter("proid");
+		System.out.println("Delete Before");
+		String msg = dao.delete(ids);
+		if (msg == null) {
+			model.addAttribute("message", "Delete Not Success");
+		} else {
+			model.addAttribute("message", "Delete Success");
+		}
+		ModelAndView model2 = new ModelAndView("index");
+
+		return model2;
+	}
+	
+	HttSession session
+	session.setAttribute("name", "PROD ID------>" + p.getProid());
+	

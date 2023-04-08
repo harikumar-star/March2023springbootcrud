@@ -1,0 +1,47 @@
+GIT COMMANDS:
+================
+
+git fetch -- fetch the contents
+
+git checkout origin -- branch changes to origin
+
+Push Single file to git
+========================
+ git commit -m "Pushing Only Single file to git" config/local.js 
+ 
+Push to two files to git:
+===========================
+ 
+ git commit -m "Pushing Only two files to git" config/local.js  config/gulp.js
+ 
+ Git push commands
+ ==================
+ 
+ git init
+ git add .
+ git commit -m "messsgae"
+ git remote add origin https//.git
+ git push -u -f origin master
+ 
+ ------------------------------------
+ 
+ Git log:
+ ========
+ git log
+ 
+ Git reflog:
+ ==========
+ git reflog
+ 
+ -----------------------------------
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

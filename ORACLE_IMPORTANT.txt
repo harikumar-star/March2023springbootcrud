@@ -1,0 +1,101 @@
+ORACLE QUERIES:
+===============
+
+CREATE SEQUENCE:
+===============
+
+CREATE SEQUENCE customers_seq
+ START WITH     10001
+ INCREMENT BY   1
+ NOCACHE
+ NOCYCLE;
+ 
+ CREATE TRIGGERS:
+ ================
+ 
+ CREATE OR REPLACE TRIGGER trigger_name
+  BEFORE INSERT ON table_name
+  FOR EACH ROW
+BEGIN
+  SELECT name_of_sequence.nextval
+    INTO :new.primary_key_column
+    FROM dual;
+END;
+
+ORACLE 11.1
+===========
+
+CREATE OR REPLACE TRIGGER trigger_name
+  BEFORE INSERT ON table_name
+  FOR EACH ROW
+BEGIN
+  :new.primary_key_column := name_of_sequence.nextval;
+END;
+ 
+SYS_GUID:
+=========
+CREATE TABLE table_name (
+  primary_key_column raw(16) default sys_guid() primary key,
+  <<other columns>>
+) 
+ 
+ DROP SEQUENCE:
+ ==============
+ DROP SEQUENCE system.customers_seq;
+ 
+ VIEW AVAILABLE TRIGGERS:
+ ========================
+ SELECT
+    trigger_name,
+    trigger_type,
+    triggering_event,
+    table_owner, 
+    table_name, 
+    base_object_type, 
+    status, 
+    trigger_body    
+FROM 
+    user_triggers
+ORDER BY
+    trigger_name ASC,
+    base_object_type ASC,
+    table_name ASC
+	
+	
+	DROP TRIGGERS:
+	==============
+	
+	DROP TRIGGER hr.salary_check; 
+ ----------------------------------------------
+
+DISABLE TRIGGERS:
+================
+
+ALTER TRIGGER trigger_name DISABLE;
+ALTER TRIGGER customers_audit_trg DISABLE;
+
+ALTER TABLE table_name DISABLE ALL TRIGGERS;
+ALTER TABLE customers DISABLE ALL TRIGGERS;
+
+CUSTOMERS_AUDIT_TRG IS TRIGGER NAME 
+
+-------------------------------------
+
+LINKS:
+======
+
+ORACLE --- https://www.oracletutorial.com/oracle-basics/oracle-and/
+
+---------------------------
+INSERT QUERY:
+============
+
+insert into user_adidas(userid,username,gender,email,password)values(customers_seq.NEXTVAL,'rr','fcc','ff','ff');
+
+-------------------------------------------
+ROWNUM:
+======
+
+SELECT * FROM employees WHERE ROWNUM < 10;
+https://docs.oracle.com/cd/B14117_01/server.101/b10759/pseudocolumns008.htm
+--------------------------------------------------------
