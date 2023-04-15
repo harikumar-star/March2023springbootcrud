@@ -170,6 +170,204 @@ create , delete , rename , drop  -- we need ddl
 DML (data manipulation languae)
 ===
 insert ,update ,delet
+
+=====================
+
+BATCH INSERT:
+============
+
+@RequestMapping(value = "writecsv", method = RequestMethod.GET)
+	public Employee writecsv(Model model) throws IOException {
+
+		String sql = "SELECT * FROM user_register";
+		return jdbcTemplate.query(sql, new ResultSetExtractor<Employee>() {
+
+			@Override
+			public Employee extractData(ResultSet rs) throws SQLException, DataAccessException {
+				ResultSetMetaData Mdata = rs.getMetaData();
+				Mdata.getColumnName(1);
+				// Writing data to a csv file
+				String line1[] = { Mdata.getColumnName(1), Mdata.getColumnName(2), Mdata.getColumnName(3),
+						Mdata.getColumnName(4), Mdata.getColumnName(5) };
+				String data[] = new String[5];
+				while (rs.next()) {
+
+					try {
+
+						CSVWriter writer = new CSVWriter(new FileWriter("E:\\output.csv"));
+						String line12[] = { "id", "name", "Desing", "Exper", "Age", "Status" };
+						// String line2[] = {p.getName(), p.getDesignation(), p.getExperience(),
+						// p.getAge(), p.getStatus()};
+						data[0] = rs.getString(1);
+						data[1] = rs.getString(2);
+						data[2] = rs.getString(3);
+						data[3] = rs.getString(4);
+						data[4] = rs.getString(5);
+						writer.writeNext(line12);
+						writer.writeNext(data);
+
+						System.out.println("Data Fetched and Written to CSV file!");
+						writer.flush();
+
+					}
+
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					// return p;
+				}
+				return null;
+
+				// return null;
+			}
+
+		});
+
+	}
+
+	@RequestMapping(value = "insertbatch", method = RequestMethod.GET)
+	public ModelAndView insertbatch() throws FileNotFoundException {
+		System.out.println("Insert Batch");
+		List<Employee> books = readBooksFromCSV("E:\\output.csv");
+		String sql = "insert into batch_table(empid,name,designation,experience,age,status)values(?,?,?,?,?,?)";
+		ArrayList<Object[]> sqlArgs = new ArrayList<>();
+		// let's print all the person read from CSV file
+		for (Employee b : books) {
+			// add in batch
+			Object[] edata = { b.getEmpid(), b.getName(), b.getDesignation(), b.getExperience(), b.getAge(),
+					b.getStatus() };
+			sqlArgs.add(edata);
+		}
+		jdbcTemplate.batchUpdate(sql, sqlArgs);
+		System.out.println("Batch Updated");
+		return null;
+
+	}
+
+	//batch Insert method
+	private List<Employee> readBooksFromCSV(String fileName) {
+
+		boolean flag = false;
+		List<Employee> books = new ArrayList<>();
+		Path pathToFile = Paths.get(fileName);
+
+		// create an instance of BufferedReader
+		// using try with resource, Java 7 feature to close resources
+		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+
+			// read the first line from the text file
+			// String line1 = br.readLine();
+			String line2 = br.readLine();
+
+			// loop until all lines are read
+			while ((line2 = br.readLine()) != null) {
+
+				// use string.split to load a string array with the values from
+				// each line of
+				// the file, using a comma as the delimiter
+				String[] attributes = line2.split(",");
+
+				/*
+				 * Employee book = createBook(attributes);
+				 * 
+				 * // adding book into ArrayList books.add(book);
+				 */
+				// read next line before looping
+				// if end of file reached, line would be null
+				Employee book = createBook(attributes);
+
+				line2 = br.readLine();
+				String empid = attributes[0];
+				String name = attributes[1];
+				String designation = attributes[2];
+				String age = attributes[3];
+
+				book.setEmpid(empid);
+				book.setName(name);
+				book.setDesignation(designation);
+				book.setAge(age);
+
+				books.add(book);
+
+			}
+
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		return books;
+	}
+
+	// batch insert methods
+	private Employee createBook(String[] metadata) {
+		String id = metadata[0];
+		String name = metadata[1];
+		String desing = metadata[2];
+		String exper = metadata[3];
+		String age = metadata[4];
+		String status = metadata[5];
+
+		// create and return book of this metadata
+		return new Employee(id, name, desing, exper, age, status);
+	}
+	
+	=========================
+	
+	BATCH UPDATE:
+	=============
+	
+	
+	@RequestMapping(value = "updatebatch", method = RequestMethod.GET)
+	@Transactional
+	public ModelAndView updatebatch(Model models) {
+		System.out.println("update Batch Started");
+
+		Employee emp1 = new Employee();
+		emp1.setEmpid("10002");
+		emp1.setName("hari");
+
+		Employee emp2 = new Employee();
+		emp2.setEmpid("11");
+		emp2.setName("ramkumar");
+
+		List<Employee> emplist = new ArrayList<Employee>();
+		emplist.add(emp1);
+		emplist.add(emp2);
+
+		String sql = "update batch_table set name =? where empid=?";
+
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+
+				// TODO Auto-generated method stub
+System.out.println("Inside Setvalues method");
+				
+				ps.setString(1, emplist.get(i).getName());
+				ps.setString(2, emplist.get(i).getEmpid());
+
+			}
+
+			@Override
+			public int getBatchSize() {
+				// TODO Auto-generated method stub
+				return emplist.size();
+			}
+		});
+
+		return null;
+	}
+
+}
+
+
+
+
+
+
+
 	
 	
 	
