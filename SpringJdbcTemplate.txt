@@ -157,4 +157,19 @@ DELETE RECORD:
 	
 	HttSession session
 	session.setAttribute("name", "PROD ID------>" + p.getProid());
+	============================
+	
+	DDL vs DML
+
+DDL:(data definition language)
+===
+main container is db and folder in container  are schema inside schema we have that table,storedprocdure,functions
+
+create , delete , rename , drop  -- we need ddl 
+
+DML (data manipulation languae)
+===
+insert ,update ,delet
+	
+	
 	
