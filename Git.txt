@@ -34,7 +34,10 @@ Push to two files to git:
  git reflog
  
  -----------------------------------
+ Git checkout
+ =========
  
+ git checkout -b my-feature
  
  
  
