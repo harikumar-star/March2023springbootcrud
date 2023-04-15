@@ -99,3 +99,14 @@ ROWNUM:
 SELECT * FROM employees WHERE ROWNUM < 10;
 https://docs.oracle.com/cd/B14117_01/server.101/b10759/pseudocolumns008.htm
 --------------------------------------------------------
+
+
+SHOW OWNER TABLE:
+=================
+
+SELECT owner, table_name
+  FROM dba_tables
+
+SHOW USER TABLKE:
+==================
+SELECT table_name
